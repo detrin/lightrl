@@ -9,6 +9,7 @@ from lightrl import (
     EpsilonFirstBandit,
     EpsilonDecreasingBandit,
     UCB1Bandit,
+    GreedyBanditWithHistory,
 )
 
 
@@ -242,3 +243,51 @@ class TestUCB1Bandit:
         """Test update method raises ValueError for invalid reward."""
         with pytest.raises(ValueError, match=r"Reward must be in the range \[0, 1\]."):
             self.bandit.update(0, 1.2)
+
+
+class TestGreedyBanditWithHistory:
+    def setup_method(self):
+        """Set up the bandit instance for testing."""
+        self.arms = [0, 1, 2]
+        self.history_length = 5
+        self.bandit = GreedyBanditWithHistory(
+            arms=self.arms, history_length=self.history_length
+        )
+
+    def test_initialization(self):
+        """Verify bandit initialization."""
+        assert self.bandit.history_length == self.history_length
+        assert len(self.bandit.history) == len(self.arms)
+        assert all(len(history) == 0 for history in self.bandit.history)
+
+    def test_select_arm_before_history_full(self):
+        """Ensure random arm selection if any arm history is incomplete."""
+        self.bandit.history[0] = [1] * (self.history_length - 1)
+        arm = self.bandit.select_arm()
+        assert arm == 0 or arm == 1 or arm == 2  # Any unfulfilled arm can be chosen
+
+    def test_select_arm_after_history_full(self):
+        """Test selection after fulfilling the history length."""
+        self.bandit.q_values = [0.5, 0.8, 0.3]
+        self.bandit.history = [[1] * self.history_length] * len(self.arms)
+        arm = self.bandit.select_arm()
+        assert arm == 1  # Since q_value for arm 1 is the highest
+
+    def test_update_history(self):
+        """Test that history maintains its bounded length and updates correctly."""
+        for _ in range(self.history_length + 2):
+            self.bandit.update(0, 1)
+
+        assert len(self.bandit.history[0]) == self.history_length  # Should be capped
+        assert self.bandit.q_values[0] == 1.0  # Average of history should be correct
+        assert self.bandit.counts[0] == self.history_length
+
+    def test_update_history_correct_mean(self):
+        """Test updating alters Q-value of the arm correctly with mixed rewards."""
+        rewards = [1.0, 0.8, 0.9, 0.7, 0.6]
+        for reward in rewards:
+            self.bandit.update(0, reward)
+
+        expected_mean = sum(rewards) / len(rewards)
+        assert pytest.approx(self.bandit.q_values[0], rel=1e-2) == expected_mean
+        assert len(self.bandit.history[0]) == len(rewards)
