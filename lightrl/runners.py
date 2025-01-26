@@ -2,30 +2,31 @@ import time
 from typing import Callable, Optional, Tuple, Union, List
 from tqdm import tqdm
 
+
 def two_state_time_dependent_process(
-    bandit, 
-    fun: Callable[..., Tuple[float, float]], 
+    bandit,
+    fun: Callable[..., Tuple[float, float]],
     failure_threshold: float = 0.1,
     default_wait_time: float = 5,
     extra_wait_time: float = 10,
     waiting_args: Optional[Union[Tuple, List]] = None,
     max_steps: int = 500,
     verbose: bool = False,
-    reward_factor: float = 1e-6
+    reward_factor: float = 1e-6,
 ) -> None:
     """Execute a two-state time-dependent process with a bandit decision-maker.
 
-    This function simulates a process which alternates between an "ALIVE" state 
-    and a "WAITING" state based on the performance of a given task in relation 
-    to a failure threshold. It updates the bandit model with rewards calculated 
+    This function simulates a process which alternates between an "ALIVE" state
+    and a "WAITING" state based on the performance of a given task in relation
+    to a failure threshold. It updates the bandit model with rewards calculated
     from successful tasks.
 
     Args:
-        bandit: An object with methods `select_arm`, `update`, and `report`, representing 
+        bandit: An object with methods `select_arm`, `update`, and `report`, representing
                 a multi-armed bandit.
-        fun: A function to be called with the current arm's arguments. Should return a tuple 
+        fun: A function to be called with the current arm's arguments. Should return a tuple
              containing the number of successful and failed tasks.
-        failure_threshold: A float to determine what fraction of tasks fails that triggers 
+        failure_threshold: A float to determine what fraction of tasks fails that triggers
                            a switch to the "WAITING" state.
         default_wait_time: The base wait time in seconds between task executions in the "ALIVE" state.
         extra_wait_time: Additional wait time in seconds to be added in the "WAITING" state.
@@ -60,16 +61,16 @@ def two_state_time_dependent_process(
 
         if state == "ALIVE":
             current_arm_index = bandit.select_arm()
-            
+
             fun_args = bandit.arms[current_arm_index]
             if not (isinstance(fun_args, tuple) or isinstance(fun_args, list)):
                 fun_args = (fun_args,)
-            successful_tasks, failed_tasks = fun(*fun_args) 
+            successful_tasks, failed_tasks = fun(*fun_args)
             fail_fraction = failed_tasks / (successful_tasks + failed_tasks)
 
             time.sleep(default_wait_time)
             waiting_time += default_wait_time
-            
+
             if fail_fraction >= failure_threshold:
                 last_alive_successes = successful_tasks
                 last_arm_index = current_arm_index
@@ -84,7 +85,7 @@ def two_state_time_dependent_process(
             successful_tasks, failed_tasks = fun(*waiting_args)
             fail_fraction = failed_tasks / (successful_tasks + failed_tasks)
             waiting_steps += 1
-            
+
             time.sleep(default_wait_time + extra_wait_time)
             waiting_time += default_wait_time + extra_wait_time
 

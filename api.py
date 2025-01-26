@@ -1,13 +1,3 @@
-# lightrl
-Lightweight Reinforcement Learning python library.
-
-![main](https://github.com/detrin/lightrl/actions/workflows/test_main.yml/badge.svg) 
-
-[Multi-armed_bandit](https://en.wikipedia.org/wiki/Multi-armed_bandit)
-
-## Example
-Typical example is when you want to call API, but you are being blocked. With this package you can automatically find the optimal number of requests that should be sent together in order to achieve error rate below certain treshold.
-```python
 import time
 import random
 from typing import Tuple
@@ -76,22 +66,3 @@ if __name__ == "__main__":
         verbose=True,
         reward_factor=1e-6,
     )
-```
-
-This script will run for 3 mins and then it will output at the end
-```
-Q-values per arm:
-  num_tasks=10: avg_reward=0.00010, count=6
-  num_tasks=25: avg_reward=0.00019, count=12
-  num_tasks=50: avg_reward=0.00030, count=15
-  num_tasks=100: avg_reward=0.00087, count=7
-  num_tasks=150: avg_reward=0.00083, count=11
-  num_tasks=200: avg_reward=0.00113, count=109
-  num_tasks=250: avg_reward=0.00010, count=11
-  num_tasks=300: avg_reward=0.00010, count=13
-  num_tasks=350: avg_reward=0.00009, count=16
-  num_tasks=400: avg_reward=0.00010, count=11
-  num_tasks=450: avg_reward=0.00013, count=9
-  num_tasks=500: avg_reward=0.00010, count=17
-```
-Multi-armed bandit correctly found out that the optimal number of tasks is num_tasks=200.

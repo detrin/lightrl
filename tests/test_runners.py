@@ -4,8 +4,9 @@ import time
 
 from lightrl import two_state_time_dependent_process
 
+
 class TestTwoStateTimeDependentProcess:
-    
+
     @pytest.fixture
     def mock_bandit(self):
         mock_bandit = MagicMock()
@@ -31,9 +32,9 @@ class TestTwoStateTimeDependentProcess:
                 max_steps=3,
                 default_wait_time=0.01,
                 extra_wait_time=0.01,
-                verbose=False
+                verbose=False,
             )
-        
+
         # Now we test with correct waiting_args
         two_state_time_dependent_process(
             bandit=mock_bandit,
@@ -42,7 +43,7 @@ class TestTwoStateTimeDependentProcess:
             max_steps=3,
             default_wait_time=0.01,
             extra_wait_time=0.01,
-            verbose=False
+            verbose=False,
         )
 
         # Check if bandit's update method was called expected number of times
@@ -50,6 +51,7 @@ class TestTwoStateTimeDependentProcess:
 
     def test_state_transition(self, mock_bandit):
         """Test transition from ALIVE to WAITING and back."""
+
         # Customize `fun` to force a failure state
         def failing_fun(*args):
             return (1, 9)
@@ -62,9 +64,8 @@ class TestTwoStateTimeDependentProcess:
             max_steps=3,
             default_wait_time=0.01,
             extra_wait_time=0.01,
-            verbose=True
+            verbose=True,
         )
 
         assert mock_bandit.select_arm.call_count > 0
-        assert mock_bandit.update.call_count == 0 
-        
+        assert mock_bandit.update.call_count == 0
