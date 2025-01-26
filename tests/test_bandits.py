@@ -3,7 +3,12 @@ from typing import List, Any
 from abc import ABC, abstractmethod
 from unittest.mock import patch
 
-from lightrl import Bandit, EpsilonGreedyBandit, EpsilonFirstBandit
+from lightrl import (
+    Bandit,
+    EpsilonGreedyBandit,
+    EpsilonFirstBandit,
+    EpsilonDecreasingBandit,
+)
 
 
 class TestBandit:
@@ -100,47 +105,97 @@ class TestEpsilonGreedyBandit:
             ], "Arm2 or Arm3 should be selected as they have the highest q-values."
 
 
-
 class TestEpsilonFirstBandit:
 
     def setup_method(self):
-        self.arms = ['arm1', 'arm2', 'arm3']
+        self.arms = ["arm1", "arm2", "arm3"]
         self.bandit = EpsilonFirstBandit(self.arms, exploration_steps=2, epsilon=0.1)
 
     def test_initialization(self):
         bandit = EpsilonFirstBandit(self.arms, exploration_steps=5, epsilon=0.2)
         assert bandit.arms == self.arms, "Arms should be initialized correctly."
-        assert bandit.exploration_steps == 5, "Exploration steps should be set correctly."
+        assert (
+            bandit.exploration_steps == 5
+        ), "Exploration steps should be set correctly."
         assert bandit.epsilon == 0.2, "Epsilon should be set correctly."
         assert bandit.step == 0, "Initial step should be zero."
 
     def test_select_arm_pure_exploration(self):
         # During initial exploration steps
         self.bandit.step = 0
-        with patch('random.randint', return_value=1):
+        with patch("random.randint", return_value=1):
             arm = self.bandit.select_arm()
-            assert arm == 1, "During exploration steps, selected arm index should be random."
+            assert (
+                arm == 1
+            ), "During exploration steps, selected arm index should be random."
 
     def test_select_arm_epsilon_greedy_during_exploration(self):
         # During exploration phase affected by epsilon
         self.bandit.step = 1
-        with patch('random.random', return_value=0.05):  # Lower than epsilon
-            with patch('random.randint', return_value=2):
+        with patch("random.random", return_value=0.05):  # Lower than epsilon
+            with patch("random.randint", return_value=2):
                 arm = self.bandit.select_arm()
-                assert arm == 2, "By epsilon, selected arm index should be random during exploration."
+                assert (
+                    arm == 2
+                ), "By epsilon, selected arm index should be random during exploration."
 
     def test_select_arm_post_exploration_exploitation(self):
         # After exploration phase, epsilon is crucial
         self.bandit.step = 3
         self.bandit.q_values = [0.1, 0.8, 0.5]
-        with patch('random.random', return_value=0.2):  # Greater than epsilon
+        with patch("random.random", return_value=0.2):  # Greater than epsilon
             arm = self.bandit.select_arm()
-            assert arm == 1, "After exploration, exploit: select the best arm based on q_values."
+            assert (
+                arm == 1
+            ), "After exploration, exploit: select the best arm based on q_values."
 
     def test_select_arm_post_exploration_exploration(self):
         # After exploration phase, random selection based on epsilon
         self.bandit.step = 3
-        with patch('random.random', return_value=0.05):  # Less than epsilon
-            with patch('random.randint', return_value=0):
+        with patch("random.random", return_value=0.05):  # Less than epsilon
+            with patch("random.randint", return_value=0):
                 arm = self.bandit.select_arm()
-                assert arm == 0, "By epsilon, arm selection post-exploration should be random."
+                assert (
+                    arm == 0
+                ), "By epsilon, arm selection post-exploration should be random."
+
+
+class TestEpsilonDecreasingBandit:
+    def setup_method(self):
+        """Set up a Bandit instance for testing."""
+        self.arms = [0, 1, 2]
+        self.bandit = EpsilonDecreasingBandit(
+            arms=self.arms, initial_epsilon=1.0, limit_epsilon=0.1, half_decay_steps=100
+        )
+
+    def test_initialization(self):
+        """Verify bandit initialization."""
+        assert self.bandit.initial_epsilon == 1.0
+        assert self.bandit.limit_epsilon == 0.1
+        assert self.bandit.half_decay_steps == 100
+        assert self.bandit.epsilon == 1.0
+        assert self.bandit.step == 0
+
+    def test_select_arm_explore(self):
+        """Test that the bandit explores randomly based on epsilon probability."""
+        with patch("random.random", return_value=0.5):  # Ensures we are exploring
+            self.bandit.epsilon = 0.8
+            arm_selected = self.bandit.select_arm()
+            assert arm_selected in self.arms
+
+    def test_select_arm_exploit(self):
+        # TODO implement this test
+        pass
+
+    def test_update_epsilon(self):
+        """Check that epsilon updates according to the decay model."""
+        self.bandit.step = 50  # midway to half_decay
+        self.bandit.update_epsilon()
+        expected_epsilon = 0.1 + (1.0 - 0.1) * (0.5 ** (50 / 100))
+        assert pytest.approx(self.bandit.epsilon, rel=1e-2) == expected_epsilon
+
+    def test_epsilon_decay_to_limit(self):
+        """Ensure epsilon decays towards the limit epsilon."""
+        self.bandit.step = 1000  # beyond typical decay range
+        self.bandit.update_epsilon()
+        assert pytest.approx(self.bandit.epsilon, rel=1e-2) == self.bandit.limit_epsilon

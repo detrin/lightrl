@@ -174,7 +174,7 @@ class EpsilonDecreasingBandit(Bandit):
         if random.random() < self.epsilon:
             # Explore: select a random arm
             return random.randint(0, len(self.arms) - 1)
-
+        print(self.q_values)
         # Exploit: select the arm with maximum estimated value
         max_q = max(self.q_values)
         candidates = [i for i, q in enumerate(self.q_values) if q == max_q]
