@@ -8,6 +8,7 @@ from lightrl import (
     EpsilonGreedyBandit,
     EpsilonFirstBandit,
     EpsilonDecreasingBandit,
+    UCB1Bandit,
 )
 
 
@@ -199,3 +200,45 @@ class TestEpsilonDecreasingBandit:
         self.bandit.step = 1000  # beyond typical decay range
         self.bandit.update_epsilon()
         assert pytest.approx(self.bandit.epsilon, rel=1e-2) == self.bandit.limit_epsilon
+
+
+class TestUCB1Bandit:
+    def setup_method(self):
+        """Set up a Bandit instance for testing."""
+        self.arms = [0, 1, 2]
+        self.bandit = UCB1Bandit(arms=self.arms)
+
+    def test_initialization(self):
+        """Verify bandit initialization."""
+        assert self.bandit.total_count == 0
+        assert self.bandit.q_values == [0.0, 0.0, 0.0]
+        assert self.bandit.counts == [0, 0, 0]
+
+    def test_select_first_arm(self):
+        """Test that an unselected arm is chosen first."""
+        arm = self.bandit.select_arm()
+        assert (
+            arm == 0
+        )  # As no arm has been selected yet, it selects the first one with count 0
+
+    def test_select_arm_ucb_calculation(self):
+        """Test arm selection using UCB1 after some updates."""
+        self.bandit.q_values = [0.5, 0.5, 0.5]
+        self.bandit.counts = [1, 1, 1]
+        self.bandit.total_count = 3
+
+        with patch("math.log", return_value=1):  # Simplifying log for predictability
+            arm = self.bandit.select_arm()
+            assert arm == 0  # Due to tied UCB values, implementation select the first
+
+    def test_update_arm_and_values(self):
+        """Test that updating an arm modifies the right variables correctly."""
+        self.bandit.update(0, 0.8)
+        assert self.bandit.counts[0] == 1
+        assert self.bandit.q_values[0] == 0.8
+        assert self.bandit.total_count == 1
+
+    def test_update_raises_value_error(self):
+        """Test update method raises ValueError for invalid reward."""
+        with pytest.raises(ValueError, match=r"Reward must be in the range \[0, 1\]."):
+            self.bandit.update(0, 1.2)
