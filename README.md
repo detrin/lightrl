@@ -1,9 +1,14 @@
 # lightrl
-Lightweight Reinforcement Learning python library.
+Lightweight Reinforcement Learning python library for optimizing time dependent processes.
 
 ![main](https://github.com/detrin/lightrl/actions/workflows/test_main.yml/badge.svg) 
 
-[Multi-armed_bandit](https://en.wikipedia.org/wiki/Multi-armed_bandit)
+Read more about [Multi-armed_bandit](https://en.wikipedia.org/wiki/Multi-armed_bandit).
+
+## Installation
+```
+pip install lightrl
+```
 
 ## Example
 Typical example is when you want to call API, but you are being blocked. With this package you can automatically find the optimal number of requests that should be sent together in order to achieve error rate below certain treshold.
