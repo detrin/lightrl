@@ -34,7 +34,7 @@ These bandits use epsilon strategies to balance exploration and exploitation.
 
 ## Runners Module
 
-**`two_state_time_dependent_process`**: This function models a process with time-dependent state transitions, useful in simulating dynamic environments.
+**`two_state_time_dependent_process`**: The function `two_state_time_dependent_process()` takes the bandit and keeps two states. The `ALIVE` state and `WAITING` state, the bandit is switching between those two states in order to probe the rewards (tasks per seconds multiplied by `reward_factor`). In `WAITING` state we can select lower number of tasks to process (`waiting_args`).
 ::: lightrl.runners.two_state_time_dependent_process
 
 ---

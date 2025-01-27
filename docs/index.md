@@ -15,7 +15,6 @@ To start using LightRL, check out the following resources:
 - **[API Documentation](api.md)**: Detailed information on the API and available functions.
 - **[Examples](examples.md)**: In-depth tutorials and examples showcasing the features and capabilities of LightRL.
 
-
 LightRL is licensed under the [MIT License](license.md), ensuring that it remains free and open-source.
 
 ## Contact

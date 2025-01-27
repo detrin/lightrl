@@ -4,7 +4,6 @@
 Typical example is when you want to call API, but you are being blocked. With this package you can automatically find the optimal number of requests that should be sent together in order to achieve error rate below certain treshold.
 ``` python
 import time
-import random
 from typing import Tuple
 
 from lightrl import EpsilonDecreasingBandit, two_state_time_dependent_process
@@ -40,7 +39,18 @@ class SimulatedAPI:
         self.time_window_requests.append(current_time)
         return 200
 
-
+def api_request_fun(request_num):
+    success_cnt = 0
+    fail_cnt = 0
+    for _ in range(request_num):
+        http_status = api.request()
+        if http_status == 200:
+            success_cnt += 1
+        else:
+            fail_cnt += 1
+        time.sleep(0.0001)
+    return success_cnt, fail_cnt
+    
 if __name__ == "__main__":
     api = SimulatedAPI()
     request_nums = [10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
@@ -48,28 +58,18 @@ if __name__ == "__main__":
         arms=request_nums, initial_epsilon=1.0, limit_epsilon=0.1, half_decay_steps=100
     )
 
-    def api_request_fun(request_num):
-        success_cnt = 0
-        fail_cnt = 0
-        for _ in range(request_num):
-            http_status = api.request()
-            if http_status == 200:
-                success_cnt += 1
-            else:
-                fail_cnt += 1
-            time.sleep(0.0001)
-        return success_cnt, fail_cnt
-
     two_state_time_dependent_process(
         bandit=bandit,
         fun=api_request_fun,
-        failure_threshold=0.1, # Allowed failure is 10%
-        default_wait_time=0.1, # Wait 0.1 s between requests
-        extra_wait_time=0.1, # Wait extra 0.1 s when in blocked state
-        waiting_args=[10], # Working with only 10 requests in the waiting state to test if we are still blocked
-        max_steps=1000, # Run for maximum of 1000 steps
+        failure_threshold=0.1,  # Allowed failure is 10%
+        default_wait_time=0.1,  # Wait 0.1 s between requests
+        extra_wait_time=0.1,  # Wait extra 0.1 s when in blocked state
+        waiting_args=[
+            10
+        ],  # Working with only 10 requests in the waiting state to test if we are still blocked
+        max_steps=1000,  # Run for maximum of 1000 steps
         verbose=True,
-        reward_factor=1e-6, # In case you want to keep reward below 1 (for UCB1Bandit)
+        reward_factor=1e-6,  # In case you want to keep reward below 1 (for UCB1Bandit)
     )
 ```
 
