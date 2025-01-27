@@ -2,11 +2,13 @@ site_name: LightRL Documentation
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
-  - Exmaples: examples.md
+  - Examples: examples.md
   - API Documentation: api.md
 
 theme:
   name: material
+  features:
+    - content.code.copy
 
 plugins:
   - search
@@ -18,6 +20,13 @@ markdown_extensions:
   - codehilite
   - toc:
       permalink: True
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 # Optional: You can specify the directory where the documentation source files are located.
 docs_dir: docs

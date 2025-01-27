@@ -2,7 +2,7 @@
 
 ## Optimize number of calls per second to API
 Typical example is when you want to call API, but you are being blocked. With this package you can automatically find the optimal number of requests that should be sent together in order to achieve error rate below certain treshold.
-```python
+``` python
 import time
 import random
 from typing import Tuple
