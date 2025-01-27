@@ -1,4 +1,4 @@
-# lightrl
+# LightRL
 Lightweight Reinforcement Learning python library for optimizing time dependent processes.
 
 ![main](https://github.com/detrin/lightrl/actions/workflows/test_main.yml/badge.svg) 
