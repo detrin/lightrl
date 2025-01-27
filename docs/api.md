@@ -9,54 +9,40 @@ LightRL includes a variety of bandit algorithms, each tailored for specific use 
 ### Base Bandit Class
 
 ### `Bandit`
-
-::: lightrl.bandits.Bandit
-
 The foundational class for all bandit algorithms. Subclasses provide specialized implementations.
+::: lightrl.bandits.Bandit
 
 ### Epsilon-Based Bandits
 
 These bandits use epsilon strategies to balance exploration and exploitation.
 
-- **`EpsilonGreedyBandit`**
-
+### **`EpsilonGreedyBandit`**
+Implements an epsilon-greedy algorithm, allowing for a tunable exploration rate.
 ::: lightrl.bandits.EpsilonGreedyBandit
 
-  Implements an epsilon-greedy algorithm, allowing for a tunable exploration rate.
-
-- **`EpsilonFirstBandit`**
-
+### **`EpsilonFirstBandit`**
+Prioritizes exploration for a set number of initial steps before switching to exploitation.
 ::: lightrl.bandits.EpsilonFirstBandit
 
-  Prioritizes exploration for a set number of initial steps before switching to exploitation.
-
-- **`EpsilonDecreasingBandit`**
-
+### **`EpsilonDecreasingBandit`**
+Uses a decreasing epsilon value over time to reduce exploration as understanding improves.
 ::: lightrl.bandits.EpsilonDecreasingBandit
-
-  Uses a decreasing epsilon value over time to reduce exploration as understanding improves.
 
 ### Other Bandit Strategies
 
-- **`UCB1Bandit`**
-
+### **`UCB1Bandit`**
+Employs the UCB1 algorithm, focusing on arm pulls with calculated confidence bounds.
 ::: lightrl.bandits.UCB1Bandit
 
-  Employs the UCB1 algorithm, focusing on arm pulls with calculated confidence bounds.
-
-- **`GreedyBanditWithHistory`**
-
+### **`GreedyBanditWithHistory`**
+A variant that uses historical performance data to adjust its greedy selection strategy.
 ::: lightrl.bandits.GreedyBanditWithHistory
-
-  A variant that uses historical performance data to adjust its greedy selection strategy.
 
 ## Runners Module
 
 ### `two_state_time_dependent_process`
-
-::: lightrl.runners.two_state_time_dependent_process
-
 This function models a process with time-dependent state transitions, useful in simulating dynamic environments.
+::: lightrl.runners.two_state_time_dependent_process
 
 ---
 
