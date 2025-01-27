@@ -6,8 +6,10 @@ on:
       - main  # or specify another branch if needed
 
 jobs:
-  deploy:
+  docs:
     runs-on: ubuntu-latest
+    environment: docs
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
