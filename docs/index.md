@@ -1,19 +1,18 @@
 # Welcome to the LightRL Documentation
 
-Welcome to the official documentation for **LightRL**, a lightweight and efficient Reinforcement Learning library aimed at providing simple yet powerful tools for developing and experimenting with RL algorithms.
+Welcome to the official documentation for **LightRL**, a lightweight Reinforcement Learning python library.
 
 ## Overview
 
-LightRL is designed to be user-friendly and flexible, providing researchers and developers with the essential tools to build and test their RL models. Whether you're a beginner or an experienced practitioner, LightRL aims to smooth the learning curve and increase productivity.
+LightRL is designed to be lightweight and easy to use for problems developers are dealing with often. There are other libraries that you might find useful, but often too extensive and complex for the simple usecases, namely [openai/gym](https://github.com/openai/gym) and [facebookresearch/ReAgent](https://github.com/facebookresearch/ReAgent).
 
 ## Getting Started
 
 To start using LightRL, check out the following resources:
 
-- **[Installation Guide](installation.md)**: Instructions on how to install LightRL and its dependencies.
-- **[Quick Start](quickstart.md)**: A brief introduction to using LightRL for your first project.
+- **[Quick Start](quickstart.md)**: Installation and minimal example.
+- **[Examples](examples.md)**: At the moment one example for online optimization of API calls.
 - **[API Documentation](api.md)**: Detailed information on the API and available functions.
-- **[Examples](examples.md)**: In-depth tutorials and examples showcasing the features and capabilities of LightRL.
 
 LightRL is licensed under the [MIT License](license.md), ensuring that it remains free and open-source.
 
