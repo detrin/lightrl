@@ -20,19 +20,19 @@ These bandits use epsilon strategies to balance exploration and exploitation.
 
 - **`EpsilonGreedyBandit`**
 
-  ::: lightrl.bandits.EpsilonGreedyBandit
+::: lightrl.bandits.EpsilonGreedyBandit
 
   Implements an epsilon-greedy algorithm, allowing for a tunable exploration rate.
 
 - **`EpsilonFirstBandit`**
 
-  ::: lightrl.bandits.EpsilonFirstBandit
+::: lightrl.bandits.EpsilonFirstBandit
 
   Prioritizes exploration for a set number of initial steps before switching to exploitation.
 
 - **`EpsilonDecreasingBandit`**
 
-  ::: lightrl.bandits.EpsilonDecreasingBandit
+::: lightrl.bandits.EpsilonDecreasingBandit
 
   Uses a decreasing epsilon value over time to reduce exploration as understanding improves.
 
@@ -40,13 +40,13 @@ These bandits use epsilon strategies to balance exploration and exploitation.
 
 - **`UCB1Bandit`**
 
-  ::: lightrl.bandits.UCB1Bandit
+::: lightrl.bandits.UCB1Bandit
 
   Employs the UCB1 algorithm, focusing on arm pulls with calculated confidence bounds.
 
 - **`GreedyBanditWithHistory`**
 
-  ::: lightrl.bandits.GreedyBanditWithHistory
+::: lightrl.bandits.GreedyBanditWithHistory
 
   A variant that uses historical performance data to adjust its greedy selection strategy.
 
