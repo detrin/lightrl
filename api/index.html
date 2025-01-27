@@ -353,6 +353,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#epsilongreedybandit" class="md-nav__link">
+    <span class="md-ellipsis">
+      EpsilonGreedyBandit
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -383,6 +392,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="select_arm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epsilonfirstbandit" class="md-nav__link">
+    <span class="md-ellipsis">
+      EpsilonFirstBandit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -409,6 +433,21 @@
       select_arm
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="select_arm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epsilondecreasingbandit" class="md-nav__link">
+    <span class="md-ellipsis">
+      EpsilonDecreasingBandit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -458,6 +497,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ucb1bandit" class="md-nav__link">
+    <span class="md-ellipsis">
+      UCB1Bandit
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -496,6 +544,21 @@
       update
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#greedybanditwithhistory" class="md-nav__link">
+    <span class="md-ellipsis">
+      GreedyBanditWithHistory
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -699,6 +762,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#epsilongreedybandit" class="md-nav__link">
+    <span class="md-ellipsis">
+      EpsilonGreedyBandit
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -729,6 +801,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="select_arm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epsilonfirstbandit" class="md-nav__link">
+    <span class="md-ellipsis">
+      EpsilonFirstBandit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -755,6 +842,21 @@
       select_arm
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="select_arm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epsilondecreasingbandit" class="md-nav__link">
+    <span class="md-ellipsis">
+      EpsilonDecreasingBandit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -804,6 +906,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ucb1bandit" class="md-nav__link">
+    <span class="md-ellipsis">
+      UCB1Bandit
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -842,6 +953,21 @@
       update
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#greedybanditwithhistory" class="md-nav__link">
+    <span class="md-ellipsis">
+      GreedyBanditWithHistory
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -935,6 +1061,8 @@
 <p>LightRL includes a variety of bandit algorithms, each tailored for specific use cases in reinforcement learning environments. The following classes are part of the <code>lightrl.bandits</code> module:</p>
 <h3 id="base-bandit-class">Base Bandit Class<a class="headerlink" href="#base-bandit-class" title="Permanent link">&para;</a></h3>
 <h3 id="bandit"><code>Bandit</code><a class="headerlink" href="#bandit" title="Permanent link">&para;</a></h3>
+<p>The foundational class for all bandit algorithms. Subclasses provide specialized implementations.
+</p>
 
 
 <div class="doc doc-object doc-class">
@@ -1409,12 +1537,11 @@
 
     </div>
 
-</div><p>The foundational class for all bandit algorithms. Subclasses provide specialized implementations.</p>
-<h3 id="epsilon-based-bandits">Epsilon-Based Bandits<a class="headerlink" href="#epsilon-based-bandits" title="Permanent link">&para;</a></h3>
+</div><h3 id="epsilon-based-bandits">Epsilon-Based Bandits<a class="headerlink" href="#epsilon-based-bandits" title="Permanent link">&para;</a></h3>
 <p>These bandits use epsilon strategies to balance exploration and exploitation.</p>
-<ul>
-<li><strong><code>EpsilonGreedyBandit</code></strong></li>
-</ul>
+<h3 id="epsilongreedybandit"><strong><code>EpsilonGreedyBandit</code></strong><a class="headerlink" href="#epsilongreedybandit" title="Permanent link">&para;</a></h3>
+<p>Implements an epsilon-greedy algorithm, allowing for a tunable exploration rate.
+</p>
 
 
 <div class="doc doc-object doc-class">
@@ -1687,10 +1814,9 @@ selecting the arm with the highest estimated value.</p>
 
     </div>
 
-</div><p>Implements an epsilon-greedy algorithm, allowing for a tunable exploration rate.</p>
-<ul>
-<li><strong><code>EpsilonFirstBandit</code></strong></li>
-</ul>
+</div><h3 id="epsilonfirstbandit"><strong><code>EpsilonFirstBandit</code></strong><a class="headerlink" href="#epsilonfirstbandit" title="Permanent link">&para;</a></h3>
+<p>Prioritizes exploration for a set number of initial steps before switching to exploitation.
+</p>
 
 
 <div class="doc doc-object doc-class">
@@ -2007,10 +2133,9 @@ an epsilon-greedy strategy thereafter.</p>
 
     </div>
 
-</div><p>Prioritizes exploration for a set number of initial steps before switching to exploitation.</p>
-<ul>
-<li><strong><code>EpsilonDecreasingBandit</code></strong></li>
-</ul>
+</div><h3 id="epsilondecreasingbandit"><strong><code>EpsilonDecreasingBandit</code></strong><a class="headerlink" href="#epsilondecreasingbandit" title="Permanent link">&para;</a></h3>
+<p>Uses a decreasing epsilon value over time to reduce exploration as understanding improves.
+</p>
 
 
 <div class="doc doc-object doc-class">
@@ -2430,11 +2555,10 @@ an epsilon-greedy strategy thereafter.</p>
 
     </div>
 
-</div><p>Uses a decreasing epsilon value over time to reduce exploration as understanding improves.</p>
-<h3 id="other-bandit-strategies">Other Bandit Strategies<a class="headerlink" href="#other-bandit-strategies" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>UCB1Bandit</code></strong></li>
-</ul>
+</div><h3 id="other-bandit-strategies">Other Bandit Strategies<a class="headerlink" href="#other-bandit-strategies" title="Permanent link">&para;</a></h3>
+<h3 id="ucb1bandit"><strong><code>UCB1Bandit</code></strong><a class="headerlink" href="#ucb1bandit" title="Permanent link">&para;</a></h3>
+<p>Employs the UCB1 algorithm, focusing on arm pulls with calculated confidence bounds.
+</p>
 
 
 <div class="doc doc-object doc-class">
@@ -2845,10 +2969,9 @@ an epsilon-greedy strategy thereafter.</p>
 
     </div>
 
-</div><p>Employs the UCB1 algorithm, focusing on arm pulls with calculated confidence bounds.</p>
-<ul>
-<li><strong><code>GreedyBanditWithHistory</code></strong></li>
-</ul>
+</div><h3 id="greedybanditwithhistory"><strong><code>GreedyBanditWithHistory</code></strong><a class="headerlink" href="#greedybanditwithhistory" title="Permanent link">&para;</a></h3>
+<p>A variant that uses historical performance data to adjust its greedy selection strategy.
+</p>
 
 
 <div class="doc doc-object doc-class">
@@ -3281,9 +3404,10 @@ an epsilon-greedy strategy thereafter.</p>
 
     </div>
 
-</div><p>A variant that uses historical performance data to adjust its greedy selection strategy.</p>
-<h2 id="runners-module">Runners Module<a class="headerlink" href="#runners-module" title="Permanent link">&para;</a></h2>
+</div><h2 id="runners-module">Runners Module<a class="headerlink" href="#runners-module" title="Permanent link">&para;</a></h2>
 <h3 id="two_state_time_dependent_process"><code>two_state_time_dependent_process</code><a class="headerlink" href="#two_state_time_dependent_process" title="Permanent link">&para;</a></h3>
+<p>This function models a process with time-dependent state transitions, useful in simulating dynamic environments.
+</p>
 
 
 <div class="doc doc-object doc-function">
@@ -3676,8 +3800,7 @@ from successful tasks.</p>
             </details>
     </div>
 
-</div><p>This function models a process with time-dependent state transitions, useful in simulating dynamic environments.</p>
-<hr />
+</div><hr />
 <p>If you have any questions or require further assistance, feel free to <a href="https://github.com/detrin/lightrl/issues">open an issue</a>.</p>
 
 
