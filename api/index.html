@@ -3265,7 +3265,7 @@ an epsilon-greedy strategy thereafter.</p>
     </div>
 
 </div><h2 id="runners-module">Runners Module<a class="headerlink" href="#runners-module" title="Permanent link">&para;</a></h2>
-<p><strong><code>two_state_time_dependent_process</code></strong>: This function models a process with time-dependent state transitions, useful in simulating dynamic environments.
+<p><strong><code>two_state_time_dependent_process</code></strong>: The function <code>two_state_time_dependent_process()</code> takes the bandit and keeps two states. The <code>ALIVE</code> state and <code>WAITING</code> state, the bandit is switching between those two states in order to probe the rewards (tasks per seconds multiplied by <code>reward_factor</code>). In <code>WAITING</code> state we can select lower number of tasks to process (<code>waiting_args</code>).
 </p>
 
 

@@ -282,6 +282,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#minimal-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minimal example
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -380,6 +389,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#minimal-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minimal example
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -400,6 +418,71 @@
 <h3 id="using-pypi">Using PyPI<a class="headerlink" href="#using-pypi" title="Permanent link">&para;</a></h3>
 <p>Using bare pip manager just simply install <code>lightrl</code> package.
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip install lightrl
+</span></code></pre></div></p>
+<h2 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h2>
+<p>Imagine we have a time dependent process where we are processing tasks one by one (or in parallel) and that after too many requests our tasks will start to fail. Let's imagine we want to get below desired error rate of 10%. We also have <code>testing_simulation_function(num_tasks)</code> that will return the number of <code>successful_tasks</code> and number of <code>failed_tasks</code>. We can use <code>EpsilonDecreasingBandit</code> to optimize online the number of tasks per second. The function <code>two_state_time_dependent_process()</code> takes the bandit and keeps two states. The <code>ALIVE</code> state and <code>WAITING</code> state, the bandit is switching between those two states in order to probe the rewards (tasks per seconds multiplied by <code>reward_factor</code>). In <code>WAITING</code> state we can select lower number of tasks to process (<code>waiting_args</code>).
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lightrl</span><span class="w"> </span><span class="kn">import</span> <span class="n">EpsilonDecreasingBandit</span><span class="p">,</span> <span class="n">two_state_time_dependent_process</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">testing_simulation_function</span><span class="p">(</span><span class="n">num_tasks</span><span class="p">):</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="c1"># Simulate the number of successful and failed tasks</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="c1"># num_tasks = 0, p = 0.05</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="c1"># num_tasks = 100, p = 0.05 + 100 / 200 = 0.55</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="c1"># num_tasks = 200, p = 0.05 + 200 / 200 = 1.05</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">p</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">+</span> <span class="n">num_tasks</span> <span class="o">/</span> <span class="mi">200</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">noise</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">)</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">p_with_noise</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">noise</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">p_with_noise</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p_with_noise</span><span class="p">))</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">failed_tasks</span> <span class="o">=</span> <span class="n">num_tasks</span> <span class="o">*</span> <span class="n">p_with_noise</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="n">successful_tasks</span> <span class="o">=</span> <span class="n">num_tasks</span> <span class="o">-</span> <span class="n">failed_tasks</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="k">return</span> <span class="n">successful_tasks</span><span class="p">,</span> <span class="n">failed_tasks</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="n">request_nums</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="n">bandit</span> <span class="o">=</span> <span class="n">EpsilonDecreasingBandit</span><span class="p">(</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="n">arms</span><span class="o">=</span><span class="n">request_nums</span><span class="p">,</span> <span class="n">initial_epsilon</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">limit_epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">half_decay_steps</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">request_nums</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    <span class="p">)</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">bandit</span><span class="p">)</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>    <span class="n">two_state_time_dependent_process</span><span class="p">(</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="n">bandit</span><span class="o">=</span><span class="n">bandit</span><span class="p">,</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>        <span class="n">fun</span><span class="o">=</span><span class="n">testing_simulation_function</span><span class="p">,</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        <span class="n">failure_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Allowed failure is 10%</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        <span class="n">default_wait_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Wait 0.1 s between requests</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        <span class="n">extra_wait_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Wait extra 0.1 s when in blocked state</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>        <span class="n">waiting_args</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>            <span class="mi">10</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>        <span class="p">],</span>  <span class="c1"># Working with only 10 requests in the waiting state to test if we are still blocked</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="n">max_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>  <span class="c1"># Run for maximum of 1000 steps</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="n">reward_factor</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>  <span class="c1"># In case you want to keep reward below 1 (for UCB1Bandit)</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>    <span class="p">)</span>
+</span></code></pre></div>
+This will run for about 3 min and we will get the ouput
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Q-values per arm:
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  num_tasks=10: avg_reward=0.00006, count=9
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  num_tasks=20: avg_reward=0.00004, count=5
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  num_tasks=30: avg_reward=0.00003, count=3
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  num_tasks=40: avg_reward=0.00008, count=10
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  num_tasks=50: avg_reward=0.00009, count=7
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  num_tasks=60: avg_reward=0.00010, count=8
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  num_tasks=70: avg_reward=0.00011, count=38
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  num_tasks=80: avg_reward=0.00011, count=6
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  num_tasks=90: avg_reward=0.00010, count=22
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  num_tasks=100: avg_reward=0.00011, count=160
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  num_tasks=110: avg_reward=0.00009, count=7
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  num_tasks=120: avg_reward=0.00009, count=9
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  num_tasks=130: avg_reward=0.00010, count=8
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  num_tasks=140: avg_reward=0.00010, count=6
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  num_tasks=150: avg_reward=0.00008, count=8
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  num_tasks=160: avg_reward=0.00005, count=13
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  num_tasks=170: avg_reward=0.00004, count=6
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>  num_tasks=180: avg_reward=0.00002, count=3
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  num_tasks=190: avg_reward=0.00000, count=3
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>  num_tasks=200: avg_reward=0.00000, count=8
 </span></code></pre></div></p>
 
 
