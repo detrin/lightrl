@@ -5,15 +5,21 @@ on:
     branches:
       - main
     tags:
-      - 'v*.*.*'   # This triggers workflow on tags matching vX.X.X format
+      - 'v*.*.*'
 
 jobs:
   build-and-publish:
-    if: github.ref == 'refs/heads/main' && startsWith(github.event.ref, 'refs/tags/v') # Ensure it's main and a version tag
     runs-on: ubuntu-latest
     environment: pypi
 
     steps:
+    - name: Check if both branch and tag conditions are satisfied
+      run: |
+        if [[ "$GITHUB_REF" != refs/tags/v* ]] || [[ "$GITHUB_BASE_REF" != main ]]; then
+          echo "Conditions not satisfied, exiting."
+          exit 1
+        fi
+        
     - uses: actions/checkout@v2
 
     - name: Set up Python
