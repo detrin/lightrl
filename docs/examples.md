@@ -14,9 +14,9 @@ class SimulatedAPI:
     def __init__(self):
         # Initialize variables to keep track of requests
         self.time_window_requests = []
-        self.window_length = 1  # 60 seconds window
+        self.window_length = 1  # 1 second window
         self.request_limit = 200  # request limit in a window
-        self.block_duration = 1  # block duration in seconds
+        self.block_duration = 1  # 1 second long block
         self.blocked_until = 0
 
     def request(self) -> Tuple[int, int]:
@@ -63,13 +63,13 @@ if __name__ == "__main__":
     two_state_time_dependent_process(
         bandit=bandit,
         fun=api_request_fun,
-        failure_threshold=0.1,
-        default_wait_time=0.1,
-        extra_wait_time=0.1,
-        waiting_args=[10],  # Working with 10 requests in the waiting state
-        max_steps=1000,
+        failure_threshold=0.1, # Allowed failure is 10%
+        default_wait_time=0.1, # Wait 0.1 s between requests
+        extra_wait_time=0.1, # Wait extra 0.1 s when in blocked state
+        waiting_args=[10], # Working with only 10 requests in the waiting state to test if we are still blocked
+        max_steps=1000, # Run for maximum of 1000 steps
         verbose=True,
-        reward_factor=1e-6,
+        reward_factor=1e-6, # In case you want to keep reward below 1 (for UCB1Bandit)
     )
 ```
 
