@@ -1,6 +1,8 @@
 site_name: LightRL Documentation
 nav:
   - Home: index.md
+  - Quickstart: quickstart.md
+  - Exmaples: examples.md
   - API Documentation: api.md
 
 theme:

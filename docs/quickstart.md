@@ -1,6 +1,8 @@
-# Installation
+# Quickstart
 
-## Using PyPI
+## Installation
+
+### Using PyPI
 
 Using bare pip manager just simply install `lightrl` package.
 ```
