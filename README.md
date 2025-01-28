@@ -1,3 +1,4 @@
+![](https://i.imgur.com/ACOqWs0.jpeg)
 # LightRL
 Lightweight Reinforcement Learning python library for optimizing time dependent processes.
 
@@ -56,3 +57,28 @@ if __name__ == "__main__":
         reward_factor=1e-6,  # In case you want to keep reward below 1 (for UCB1Bandit)
     )
 ```
+This will run for roughly 3 min and it will output at the end
+```
+Q-values per arm:
+  num_tasks=10: avg_reward=0.00006, count=9
+  num_tasks=20: avg_reward=0.00004, count=5
+  num_tasks=30: avg_reward=0.00003, count=3
+  num_tasks=40: avg_reward=0.00008, count=10
+  num_tasks=50: avg_reward=0.00009, count=7
+  num_tasks=60: avg_reward=0.00010, count=8
+  num_tasks=70: avg_reward=0.00011, count=38
+  num_tasks=80: avg_reward=0.00011, count=6
+  num_tasks=90: avg_reward=0.00010, count=22
+  num_tasks=100: avg_reward=0.00011, count=160
+  num_tasks=110: avg_reward=0.00009, count=7
+  num_tasks=120: avg_reward=0.00009, count=9
+  num_tasks=130: avg_reward=0.00010, count=8
+  num_tasks=140: avg_reward=0.00010, count=6
+  num_tasks=150: avg_reward=0.00008, count=8
+  num_tasks=160: avg_reward=0.00005, count=13
+  num_tasks=170: avg_reward=0.00004, count=6
+  num_tasks=180: avg_reward=0.00002, count=3
+  num_tasks=190: avg_reward=0.00000, count=3
+  num_tasks=200: avg_reward=0.00000, count=8
+```
+We can see that the algorithm found after some time the optimal `num_tasks` from the options given.
