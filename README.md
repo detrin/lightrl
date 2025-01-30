@@ -1,4 +1,4 @@
-![](https://i.imgur.com/ACOqWs0.jpeg)
+![](https://i.imgur.com/VXUdVOB.jpeg) 
 # LightRL
 Lightweight Reinforcement Learning python library for optimizing time dependent processes.
 
