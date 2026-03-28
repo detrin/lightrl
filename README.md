@@ -118,18 +118,31 @@ bandit.update(arm, context, reward)
 
 ## Examples
 
-See [`examples/`](examples/) for runnable scripts:
+See [`examples/`](examples/) for 17 runnable scripts:
 
 | Example | Demonstrates |
 |---|---|
+| **Classics** | |
 | `ab_testing.py` | A/B test across landing page variants |
 | `ad_serving.py` | Ad placement optimization with explore-first |
 | `resource_allocation.py` | Dynamic worker pool sizing |
 | `hyperparameter_search.py` | Bandit-based learning rate search |
 | `network_routing.py` | Endpoint selection with sliding window |
-| `retry_backoff.py` | Learning optimal retry wait times |
-| `prompt_template_selection.py` | Per-task-type prompt template optimization |
 | `minimal_example.py` | Two-state process with failure simulation |
+| **Agent & LLM** | |
+| `prompt_template_selection.py` | Per-task-type prompt template optimization |
+| `agent_router.py` | Multi-decision agent loop with save/load |
+| `contextual_model_routing.py` | LinUCB routes tasks to LLM models by features |
+| `llm_cost_optimizer.py` | Quality-vs-cost optimization across haiku/sonnet/opus |
+| `agent_fleet_roi.py` | Dispatch the right AI agent per task category |
+| **Infrastructure** | |
+| `retry_backoff.py` | Learning optimal retry wait times |
+| `db_query_routing.py` | Query execution strategy per table size |
+| `dynamic_pricing.py` | Price point optimization with seasonal shifts |
+| **Techniques** | |
+| `warm_start.py` | Prior beliefs vs naive cold start |
+| `ema_nonstationary.py` | EMA decay vs cumulative average on regime change |
+| `persistence.py` | JSON save/load across process restarts |
 
 ## Development
 
