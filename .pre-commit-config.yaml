@@ -1,0 +1,31 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.10
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        additional_dependencies: []
+
+  - repo: local
+    hooks:
+      - id: check-author
+        name: check commit author
+        entry: ./scripts/check_author.sh
+        language: script
+        always_run: true
+        pass_filenames: false
+        stages: [commit-msg]
+
+      - id: no-coauthor
+        name: no co-author in commit message
+        entry: ./scripts/no_coauthor.sh
+        language: script
+        always_run: true
+        pass_filenames: false
+        stages: [commit-msg]
