@@ -38,9 +38,9 @@ class TestBandit:
         self.bandit.update(1, 0.5)
         self.bandit.report()
         out = capsys.readouterr().out
-        assert "num_tasks=1: avg_reward=1.00000, count=1" in out
-        assert "num_tasks=2: avg_reward=0.50000, count=1" in out
-        assert "num_tasks=3: avg_reward=0.00000, count=0" in out
+        assert "1: avg_reward=1.00000, count=1" in out
+        assert "2: avg_reward=0.50000, count=1" in out
+        assert "3: avg_reward=0.00000, count=0" in out
 
     def test_repr(self):
         assert repr(self.bandit) == "ConcreteBandit(arms=[1, 2, 3])"
