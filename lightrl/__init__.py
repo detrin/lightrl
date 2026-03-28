@@ -1,9 +1,9 @@
-from bandits import (
+from lightrl.bandits import (
     Bandit,
-    EpsilonGreedyBandit,
-    EpsilonFirstBandit,
     EpsilonDecreasingBandit,
-    UCB1Bandit,
+    EpsilonFirstBandit,
+    EpsilonGreedyBandit,
     GreedyBanditWithHistory,
+    UCB1Bandit,
 )
-from runners import two_state_time_dependent_process
+from lightrl.runners import two_state_time_dependent_process
