@@ -24,21 +24,21 @@ class SimulatedAPI:
         return 200
 
 
-def api_request_fun(request_num):
-    ok, fail = 0, 0
-    for _ in range(request_num):
-        if api.request() == 200:
-            ok += 1
-        else:
-            fail += 1
-        time.sleep(0.0001)
-    return ok, fail
-
-
-if __name__ == "__main__":
+def test_simulated_api_e2e():
     api = SimulatedAPI()
+
+    def api_request_fun(request_num):
+        ok, fail = 0, 0
+        for _ in range(request_num):
+            if api.request() == 200:
+                ok += 1
+            else:
+                fail += 1
+            time.sleep(0.0001)
+        return ok, fail
+
     bandit = EpsilonDecreasingBandit(
-        arms=[10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500],
+        arms=[10, 25, 50, 100, 150, 200],
         initial_epsilon=1.0,
         limit_epsilon=0.1,
         half_decay_steps=100,
@@ -47,10 +47,10 @@ if __name__ == "__main__":
         bandit=bandit,
         fun=api_request_fun,
         failure_threshold=0.1,
-        default_wait_time=0.1,
-        extra_wait_time=0.1,
+        default_wait_time=0.01,
+        extra_wait_time=0.01,
         waiting_args=[10],
-        max_steps=1000,
-        verbose=True,
+        max_steps=20,
         reward_factor=1e-6,
     )
+    assert sum(bandit.counts) > 0
