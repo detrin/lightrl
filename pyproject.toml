@@ -11,9 +11,13 @@ authors = [
 ]
 license = { file = "LICENSE" }
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
@@ -35,23 +39,23 @@ dev = [
 packages = ["lightrl"]
 
 [tool.ruff]
-target-version = "py312"
+target-version = "py38"
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP"]
+select = ["E", "F", "I"]
 ignore = []
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 
 [tool.tox]
-env_list = ["py312", "py313", "lint"]
+env_list = ["py38", "py39", "py310", "py311", "py312", "py313", "lint"]
 
 [tool.tox.env_run_base]
 deps = [".[dev]"]

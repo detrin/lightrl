@@ -1,12 +1,15 @@
+from __future__ import annotations
+
 import json
 import math
 import random
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import Dict, List, Optional, Type, Union
 
 
 class Bandit(ABC):
-    def __init__(self, arms: list, priors: list[float] | None = None, ema_alpha: float = 0.0):
+    def __init__(self, arms: list, priors: Optional[List[float]] = None, ema_alpha: float = 0.0):
         self.arms = arms
         if priors is not None and len(priors) != len(arms):
             raise ValueError(f"priors length {len(priors)} != arms length {len(arms)}")
@@ -37,14 +40,14 @@ class Bandit(ABC):
         max_q = max(self.q_values)
         return random.choice([i for i, q in enumerate(self.q_values) if q == max_q])
 
-    def save(self, path: str | Path) -> None:
+    def save(self, path: Union[str, Path]) -> None:
         data = {"class": self.__class__.__name__, "state": self.__dict__.copy()}
         Path(path).write_text(json.dumps(data, default=str))
 
     @classmethod
-    def load(cls, path: str | Path) -> "Bandit":
+    def load(cls, path: Union[str, Path]) -> Bandit:
         data = json.loads(Path(path).read_text())
-        registry: dict[str, type[Bandit]] = {c.__name__: c for c in _all_bandit_classes()}
+        registry: Dict[str, Type[Bandit]] = {c.__name__: c for c in _all_bandit_classes()}
         klass = registry[data["class"]]
         obj: Bandit = object.__new__(klass)
         obj.__dict__.update(data["state"])
@@ -141,7 +144,7 @@ class GreedyBanditWithHistory(Bandit):
     def __init__(self, arms: list, history_length: int = 100, **kwargs):
         super().__init__(arms, **kwargs)
         self.history_length = history_length
-        self.history: list[list[float]] = [[] for _ in range(len(arms))]
+        self.history: List[List[float]] = [[] for _ in range(len(arms))]
 
     def select_arm(self) -> int:
         incomplete = [i for i, h in enumerate(self.history) if len(h) < self.history_length]

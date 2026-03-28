@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import json
 import math
 from pathlib import Path
+from typing import List, Union
 
 
 class LinUCBBandit:
@@ -12,7 +15,7 @@ class LinUCBBandit:
         self.b = [[0.0] * n_features for _ in range(n_arms)]
         self.counts = [0] * n_arms
 
-    def select_arm(self, context: list[float]) -> int:
+    def select_arm(self, context: List[float]) -> int:
         best_arm, best_ucb = 0, float("-inf")
         for a in range(self.n_arms):
             A_inv = _invert(self.A[a])
@@ -23,7 +26,7 @@ class LinUCBBandit:
                 best_arm = a
         return best_arm
 
-    def update(self, arm_index: int, context: list[float], reward: float) -> None:
+    def update(self, arm_index: int, context: List[float], reward: float) -> None:
         self.counts[arm_index] += 1
         x = context
         for i in range(self.n_features):
@@ -36,7 +39,7 @@ class LinUCBBandit:
         for i, cnt in enumerate(self.counts):
             print(f"  arm {i}: count={cnt}")
 
-    def save(self, path: str | Path) -> None:
+    def save(self, path: Union[str, Path]) -> None:
         data = {
             "n_arms": self.n_arms,
             "n_features": self.n_features,
@@ -48,7 +51,7 @@ class LinUCBBandit:
         Path(path).write_text(json.dumps(data))
 
     @classmethod
-    def load(cls, path: str | Path) -> "LinUCBBandit":
+    def load(cls, path: Union[str, Path]) -> LinUCBBandit:
         data = json.loads(Path(path).read_text())
         obj = cls(data["n_arms"], data["n_features"], data["alpha"])
         obj.A = data["A"]

@@ -4,20 +4,20 @@ from tqdm import tqdm
 
 
 def _ensure_tuple(val):
-    return val if isinstance(val, tuple | list) else (val,)
+    return val if isinstance(val, (tuple, list)) else (val,)
 
 
 def two_state_time_dependent_process(
     bandit,
     fun,
-    failure_threshold: float = 0.1,
-    default_wait_time: float = 5,
-    extra_wait_time: float = 10,
+    failure_threshold=0.1,
+    default_wait_time=5,
+    extra_wait_time=10,
     waiting_args=None,
-    max_steps: int = 500,
-    verbose: bool = False,
-    reward_factor: float = 1e-6,
-) -> None:
+    max_steps=500,
+    verbose=False,
+    reward_factor=1e-6,
+):
     if waiting_args is None:
         raise ValueError("waiting_args must be provided")
     waiting_args = _ensure_tuple(waiting_args)
