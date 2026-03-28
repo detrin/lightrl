@@ -28,3 +28,14 @@ Rewards are normalized to [0, 1] as required by UCB1.
 Endpoint selection across 4 regions with varying latency profiles.
 GreedyBanditWithHistory maintains a sliding window of 30 observations per endpoint,
 adapting to latency changes over time.
+
+## retry_backoff.py
+Learns the optimal retry wait time for a flaky API using BanditRouter + ThompsonBandit.
+Reward balances recovery probability against wait cost — shorter waits score higher
+when they succeed. Converges on the sweet spot without hardcoding exponential backoff.
+
+## prompt_template_selection.py
+Agent-facing example: BanditRouter manages separate bandits per task type (code_gen,
+summarize, qa), each learning which prompt template produces the best output.
+Demonstrates how an LLM agent can offload template selection to lightrl instead of
+burning tokens reasoning about it.
