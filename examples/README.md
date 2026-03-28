@@ -39,3 +39,28 @@ Agent-facing example: BanditRouter manages separate bandits per task type (code_
 summarize, qa), each learning which prompt template produces the best output.
 Demonstrates how an LLM agent can offload template selection to lightrl instead of
 burning tokens reasoning about it.
+
+## persistence.py
+Save/load a ThompsonBandit to JSON. Run it once to train, run again to resume from
+saved state. Demonstrates how bandits survive process restarts with zero-dependency
+serialization.
+
+## agent_router.py
+Full agent loop with BanditRouter managing two independent decisions (model selection
+and batch size) using different bandit strategies. Shows save/load of the entire
+router with mixed bandit types (ThompsonBandit + UCB1Bandit).
+
+## warm_start.py
+Side-by-side comparison of a naive bandit vs one initialized with prior beliefs.
+The informed bandit starts exploiting the correct arm sooner because priors
+encode domain knowledge (e.g., "ap-south is probably fastest").
+
+## ema_nonstationary.py
+Demonstrates EMA decay vs cumulative average when the environment changes at step 500.
+Static averaging blurs pre- and post-shift rewards into an ambiguous tie, while
+EMA (alpha=0.15) correctly tracks that the best arm switched.
+
+## contextual_model_routing.py
+LinUCB contextual bandit routes tasks to LLM models based on feature vectors
+(complexity, length, is_code). Learns different routing policies for different
+task types — e.g., simple text to cheaper models, complex code to opus.
